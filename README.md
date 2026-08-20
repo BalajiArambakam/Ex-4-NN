@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>Balaji Arambakam</H3>
+<H3>212224230021</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>20/08/2026:</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -116,11 +116,64 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+```
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
+data = pd.read_csv('/content/modified_data.csv')
+
+X = data.iloc[:, 0:-1]
+y = data.iloc[:, -1] # Changed from data['Class'] to data.iloc[:, -1] to select the last column
+
+# Drop non-numeric columns from X
+X = X.drop(['date', 'street', 'city', 'statezip'], axis=1)
+
+print(X.head())
+print(y.head())
+
+print(y.unique())
+
+le = preprocessing.LabelEncoder()
+y = le.fit_transform(y)
+
+print(y[:5])
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42
+)
+
+scaler = StandardScaler()
+
+scaler.fit(X_train)
+
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+mlp = MLPClassifier(
+    hidden_layer_sizes=(10, 10, 10),
+    max_iter=1000,
+    random_state=42
+)
+
+mlp.fit(X_train, y_train)
+
+predictions = mlp.predict(X_test)
+
+print(predictions)
+
+print(confusion_matrix(y_test, predictions))
+
+print(classification_report(y_test, predictions))
+
+```
 <H3>Output:</H3>
 
-Show your results here
+<img width="862" height="492" alt="image" src="https://github.com/user-attachments/assets/1714af6c-8d3f-4552-b082-2b3bf71ce678" />
+
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
